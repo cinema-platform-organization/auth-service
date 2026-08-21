@@ -25,7 +25,7 @@ export class RedisService
 		});
 	}
 
-	public async onModuleInit() {
+	public onModuleInit() {
 		const start = Date.now();
 
 		this.logger.log("Initializing Redis connection..");
