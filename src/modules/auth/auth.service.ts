@@ -1,3 +1,4 @@
+import { RpcStatus } from "@cinema-platform/common";
 import type {
 	SendOtpRequest,
 	VerifyOtpRequest,
@@ -39,6 +40,8 @@ export class AuthService {
 			type as "phone" | "email",
 		);
 
+		console.log(code);
+
 		return { ok: true };
 	}
 
@@ -59,7 +62,10 @@ export class AuthService {
 			account = await this.authRepository.findByEmail(identifier);
 		}
 		if (!account) {
-			throw new RpcException("Account not found");
+			throw new RpcException({
+				code: RpcStatus.NOT_FOUND,
+				details: "Account not found",
+			});
 		}
 
 		if (type === "phone" && !account.isPhoneVerified) {

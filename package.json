@@ -20,6 +20,7 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
+    "@cinema-platform/common": "^1.0.0",
     "@cinema-platform/contracts": "^1.0.2",
     "@cinema-platform/core": "^1.0.3",
     "@grpc/grpc-js": "^1.14.4",
@@ -43,7 +44,7 @@
     "@nestjs/cli": "^11.0.0",
     "@nestjs/schematics": "^11.0.0",
     "@nestjs/testing": "^11.0.1",
-    "@trivago/prettier-plugin-sort-imports": "^6.0.2",
+    "@trivago/prettier-plugin-sort-imports": "^5.2.2",
     "@types/express": "^5.0.0",
     "@types/jest": "^30.0.0",
     "@types/node": "^24.0.0",
