@@ -1,5 +1,6 @@
 import { RpcStatus } from "@cinema-platform/common";
 import type {
+	RefreshRequest,
 	SendOtpRequest,
 	VerifyOtpRequest,
 } from "@cinema-platform/contracts/gen/auth";
@@ -96,6 +97,21 @@ export class AuthService {
 		}
 
 		return this.generateTokens(account.id);
+	}
+
+	public async refresh(data: RefreshRequest) {
+		const { refreshToken } = data;
+
+		const result = this.passportService.verify(refreshToken);
+
+		if (!result.valid) {
+			throw new RpcException({
+				code: RpcStatus.UNAUTHENTICATED,
+				details: result.reason,
+			});
+		}
+
+		return this.generateTokens(result.userId);
 	}
 
 	private generateTokens(userId: string) {
