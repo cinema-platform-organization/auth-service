@@ -9,11 +9,11 @@ importers:
   .:
     dependencies:
       '@cinema-platform/common':
-        specifier: ^1.0.0
-        version: 1.0.0
+        specifier: ^1.0.1
+        version: 1.0.1
       '@cinema-platform/contracts':
-        specifier: ^1.0.5
-        version: 1.0.5(@grpc/grpc-js@1.14.4)(@nestjs/common@11.2.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.2.1)(ioredis@6.0.0)(reflect-metadata@0.2.2)
+        specifier: ^1.0.6
+        version: 1.0.6(@grpc/grpc-js@1.14.4)(@nestjs/common@11.2.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.2.1)(ioredis@6.0.0)(reflect-metadata@0.2.2)
       '@cinema-platform/core':
         specifier: ^1.0.3
         version: 1.0.3(@trivago/prettier-plugin-sort-imports@5.2.2(prettier@3.9.6))(prettier@3.9.6)
@@ -349,11 +349,11 @@ packages:
   '@bufbuild/protobuf@2.14.0':
     resolution: {integrity: sha512-C3UGsiCwSprE2NKIIFA3hCDlpXTMCAXRZuEVp88L1GY36Y41+rYL5fryE+nOFhp4p4JPQvdV8PQ4DWgHgeTE+w==}
 
-  '@cinema-platform/common@1.0.0':
-    resolution: {integrity: sha512-Kl2GVC3JPTG3V6GhLCEz3eB7k0ZnChsYc1gQuN+9vUaJNoajku67yZQE79WJdFVuRQjcwNnxSBu/c+4hvPVdSg==}
+  '@cinema-platform/common@1.0.1':
+    resolution: {integrity: sha512-OfJvTNthO8x5Hpzty5q6u735HeLmBTjUUz9g/KuHVf7kFXHO7sq5yhom4ijm+V3U46clF1tM6hog0uZNrUb6Bg==}
 
-  '@cinema-platform/contracts@1.0.5':
-    resolution: {integrity: sha512-YRL+BX+QJfNsyZAaz1krt3Q7G9JxFlcjxdQ+aZJET0wFDd2AoAFwKBI8EAFD55B+oT0SP9j5fal7N6dj3Jx28w==}
+  '@cinema-platform/contracts@1.0.6':
+    resolution: {integrity: sha512-KwsjMOuqZ/wpltQEfmNAjQbv6pqNxES1sxCg702CiOMsT6QPXSrm3Nxc/g413te2IkbcWGW5UneRpGqAU9CxSg==}
 
   '@cinema-platform/core@1.0.3':
     resolution: {integrity: sha512-AHeR8s08C7WQV4oY4eoFghJtHxg2+deRJru1CE5QUvcUNm/iDD3gAn8uqvkFhddKmNEO96JYoD5H3oGcB0T54g==}
@@ -4054,9 +4054,9 @@ snapshots:
 
   '@bufbuild/protobuf@2.14.0': {}
 
-  '@cinema-platform/common@1.0.0': {}
+  '@cinema-platform/common@1.0.1': {}
 
-  '@cinema-platform/contracts@1.0.5(@grpc/grpc-js@1.14.4)(@nestjs/common@11.2.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.2.1)(ioredis@6.0.0)(reflect-metadata@0.2.2)':
+  '@cinema-platform/contracts@1.0.6(@grpc/grpc-js@1.14.4)(@nestjs/common@11.2.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.2.1)(ioredis@6.0.0)(reflect-metadata@0.2.2)':
     dependencies:
       '@nestjs/microservices': 11.2.1(@grpc/grpc-js@1.14.4)(@nestjs/common@11.2.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.2.1)(ioredis@6.0.0)(reflect-metadata@0.2.2)(rxjs@7.8.2)
       rxjs: 7.8.2

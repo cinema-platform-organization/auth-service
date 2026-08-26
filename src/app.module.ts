@@ -6,6 +6,7 @@ import { PrismaModule } from "./infrastructure/prisma/prisma.module";
 import { RedisModule } from "./infrastructure/redis/redis.module";
 import { AuthModule } from "./modules/auth/auth.module";
 import { OtpModule } from "./modules/otp/otp.module";
+import { AccountModule } from './modules/account/account.module';
 
 @Module({
 	imports: [
@@ -17,6 +18,7 @@ import { OtpModule } from "./modules/otp/otp.module";
 		RedisModule,
 		AuthModule,
 		OtpModule,
+		AccountModule,
 	],
 })
 export class AppModule {}
