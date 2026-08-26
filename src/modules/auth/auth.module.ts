@@ -3,6 +3,7 @@ import { Module } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 
 import { getPassportConfig } from "@/config";
+import { UserRepository } from "@/shared/repositories";
 
 import { OtpModule } from "../otp/otp.module";
 
@@ -19,6 +20,6 @@ import { AuthService } from "./auth.service";
 		}),
 	],
 	controllers: [AuthController],
-	providers: [AuthService, AuthRepository],
+	providers: [AuthService, AuthRepository, UserRepository],
 })
 export class AuthModule {}
