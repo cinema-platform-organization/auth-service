@@ -1,5 +1,5 @@
 import type { Account } from "@generated/client";
-import type { AccountUpdateInput } from "@generated/models";
+import type { AccountCreateInput, AccountUpdateInput } from "@generated/models";
 import { Injectable } from "@nestjs/common";
 
 import { PrismaService } from "@/infrastructure/prisma/prisma.service";
@@ -21,6 +21,12 @@ export class UserRepository {
 			where: {
 				email,
 			},
+		});
+	}
+
+	public async create(data: AccountCreateInput): Promise<Account> {
+		return await this.prismaService.account.create({
+			data,
 		});
 	}
 

@@ -12,8 +12,8 @@ importers:
         specifier: ^1.0.1
         version: 1.0.1
       '@cinema-platform/contracts':
-        specifier: ^1.0.7
-        version: 1.0.7(@grpc/grpc-js@1.14.4)(@nestjs/common@11.2.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.2.1)(ioredis@6.0.0)(reflect-metadata@0.2.2)
+        specifier: ^1.0.9
+        version: 1.0.9(@grpc/grpc-js@1.14.4)(@nestjs/common@11.2.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.2.1)(ioredis@6.0.0)(reflect-metadata@0.2.2)
       '@cinema-platform/core':
         specifier: ^1.0.3
         version: 1.0.3(@trivago/prettier-plugin-sort-imports@5.2.2(prettier@3.9.6))(prettier@3.9.6)
@@ -352,8 +352,8 @@ packages:
   '@cinema-platform/common@1.0.1':
     resolution: {integrity: sha512-OfJvTNthO8x5Hpzty5q6u735HeLmBTjUUz9g/KuHVf7kFXHO7sq5yhom4ijm+V3U46clF1tM6hog0uZNrUb6Bg==}
 
-  '@cinema-platform/contracts@1.0.7':
-    resolution: {integrity: sha512-nl8c3Cni9q5bobPPErMQ/kYmO5BwWcLgZDdIgwK8uUCAZWhlFXEwXWzPd9qSYKjad99BCz8J8sVz1ewO8jCEWA==}
+  '@cinema-platform/contracts@1.0.9':
+    resolution: {integrity: sha512-tWjLe2c1W7IYn3t9/QLeMcyFME/Pl4Q3ip5BCkAdXgA2UQRVx4D6fV7qmEeTwrxFu6ZsaO+I1+yX2wVDKqeLZA==}
 
   '@cinema-platform/core@1.0.3':
     resolution: {integrity: sha512-AHeR8s08C7WQV4oY4eoFghJtHxg2+deRJru1CE5QUvcUNm/iDD3gAn8uqvkFhddKmNEO96JYoD5H3oGcB0T54g==}
@@ -4056,7 +4056,7 @@ snapshots:
 
   '@cinema-platform/common@1.0.1': {}
 
-  '@cinema-platform/contracts@1.0.7(@grpc/grpc-js@1.14.4)(@nestjs/common@11.2.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.2.1)(ioredis@6.0.0)(reflect-metadata@0.2.2)':
+  '@cinema-platform/contracts@1.0.9(@grpc/grpc-js@1.14.4)(@nestjs/common@11.2.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.2.1)(ioredis@6.0.0)(reflect-metadata@0.2.2)':
     dependencies:
       '@nestjs/microservices': 11.2.1(@grpc/grpc-js@1.14.4)(@nestjs/common@11.2.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.2.1)(ioredis@6.0.0)(reflect-metadata@0.2.2)(rxjs@7.8.2)
       rxjs: 7.8.2
