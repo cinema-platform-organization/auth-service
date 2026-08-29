@@ -11,12 +11,11 @@ import { createHash, createHmac, randomBytes } from "crypto";
 
 import { AllConfigs } from "@/config";
 import { RedisService } from "@/infrastructure/redis/redis.service";
-import { TelegramTokens } from "@/shared/interfaces";
-import { TelegramSession } from "@/shared/interfaces/telegram-session.interface";
 import { UserRepository } from "@/shared/repositories";
 
 import { TokenService } from "../token/token.service";
 
+import { TelegramSession, TelegramTokens } from "./interfaces";
 import { TelegramRepository } from "./telegram.repository";
 
 @Injectable()

@@ -8,6 +8,7 @@ import type { Account } from "@generated/client";
 import { Injectable } from "@nestjs/common";
 import { RpcException } from "@nestjs/microservices";
 
+import { MessagingService } from "@/infrastructure/messaging/messaging.service";
 import { UserRepository } from "@/shared/repositories";
 
 import { OtpService } from "../otp/otp.service";
@@ -19,6 +20,7 @@ export class AuthService {
 		private readonly userRepository: UserRepository,
 		private readonly otpService: OtpService,
 		private readonly tokenService: TokenService,
+		private readonly messagingService: MessagingService,
 	) {}
 
 	public async sendOtp(data: SendOtpRequest) {
@@ -38,12 +40,16 @@ export class AuthService {
 			});
 		}
 
-		const code = await this.otpService.send(
+		const { code } = await this.otpService.send(
 			identifier,
 			type as "phone" | "email",
 		);
 
-		console.log(code);
+		await this.messagingService.otpRequested({
+			identifier,
+			type,
+			code,
+		});
 
 		return { ok: true };
 	}

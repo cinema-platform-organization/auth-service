@@ -3,3 +3,4 @@ export * from "./database.env";
 export * from "./redis.env";
 export * from "./passport.env";
 export * from "./telegram.env";
+export * from "./rmq.env";

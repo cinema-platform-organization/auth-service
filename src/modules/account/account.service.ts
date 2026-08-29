@@ -11,6 +11,7 @@ import type {
 import { Injectable } from "@nestjs/common";
 import { RpcException } from "@nestjs/microservices";
 
+import { MessagingService } from "@/infrastructure/messaging/messaging.service";
 import { UserRepository } from "@/shared/repositories";
 
 import { OtpService } from "../otp/otp.service";
@@ -26,6 +27,7 @@ enum Role {
 @Injectable()
 export class AccountService {
 	public constructor(
+		private readonly messagingService: MessagingService,
 		private readonly accountRepository: AccountRepository,
 		private readonly userRepository: UserRepository,
 		private readonly otpService: OtpService,
@@ -66,8 +68,10 @@ export class AccountService {
 
 		const { code, hash } = await this.otpService.send(email, "email");
 
-		console.log(code);
-
+		await this.messagingService.emailChanged({
+			email,
+			code,
+		});
 		await this.accountRepository.upsertPendingChange({
 			accountId: userId,
 			type: "email",
@@ -131,8 +135,10 @@ export class AccountService {
 
 		const { code, hash } = await this.otpService.send(phone, "phone");
 
-		console.log(code);
-
+		await this.messagingService.phoneChanged({
+			phone,
+			code,
+		});
 		await this.accountRepository.upsertPendingChange({
 			accountId: userId,
 			type: "phone",
