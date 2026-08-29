@@ -11,5 +11,8 @@ export const grpcEnv = registerAs<GrpcConfig>("grpc", () => {
 	return {
 		host: process.env.GRPC_HOST,
 		port: parseInt(process.env.GRPC_PORT),
+		clients: {
+			users: process.env.USERS_GRPC_URL,
+		},
 	};
 });

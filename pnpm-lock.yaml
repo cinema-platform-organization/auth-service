@@ -12,8 +12,8 @@ importers:
         specifier: ^1.0.1
         version: 1.0.1
       '@cinema-platform/contracts':
-        specifier: ^1.1.1
-        version: 1.1.1(@grpc/grpc-js@1.14.4)(@nestjs/common@11.2.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.2.1)(amqp-connection-manager@5.0.0(amqplib@2.0.1))(amqplib@2.0.1)(ioredis@6.0.0)(reflect-metadata@0.2.2)
+        specifier: ^1.1.3
+        version: 1.1.3(@grpc/grpc-js@1.14.4)(@nestjs/common@11.2.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.2.1)(amqp-connection-manager@5.0.0(amqplib@2.0.1))(amqplib@2.0.1)(ioredis@6.0.0)(reflect-metadata@0.2.2)
       '@cinema-platform/core':
         specifier: ^1.0.3
         version: 1.0.3(@trivago/prettier-plugin-sort-imports@5.2.2(prettier@3.9.6))(prettier@3.9.6)
@@ -361,8 +361,8 @@ packages:
   '@cinema-platform/common@1.0.1':
     resolution: {integrity: sha512-OfJvTNthO8x5Hpzty5q6u735HeLmBTjUUz9g/KuHVf7kFXHO7sq5yhom4ijm+V3U46clF1tM6hog0uZNrUb6Bg==}
 
-  '@cinema-platform/contracts@1.1.1':
-    resolution: {integrity: sha512-QeRoWbcbvoadDdbarYfHmArHFS42cW9o+70emEOy501V7861OcvlaQbewwCvOlr0zjEbq+VuaVBaXY94bFirPw==}
+  '@cinema-platform/contracts@1.1.3':
+    resolution: {integrity: sha512-CT2XJS1FNXy3xCYQ9GdLIaxt3BUw/AyjCrCKT9HLkWGTjhKhk4h/Y1O1PKlOfMLy5X0e6+qD+vRQcWBZrKTGGA==}
 
   '@cinema-platform/core@1.0.3':
     resolution: {integrity: sha512-AHeR8s08C7WQV4oY4eoFghJtHxg2+deRJru1CE5QUvcUNm/iDD3gAn8uqvkFhddKmNEO96JYoD5H3oGcB0T54g==}
@@ -4081,7 +4081,7 @@ snapshots:
 
   '@cinema-platform/common@1.0.1': {}
 
-  '@cinema-platform/contracts@1.1.1(@grpc/grpc-js@1.14.4)(@nestjs/common@11.2.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.2.1)(amqp-connection-manager@5.0.0(amqplib@2.0.1))(amqplib@2.0.1)(ioredis@6.0.0)(reflect-metadata@0.2.2)':
+  '@cinema-platform/contracts@1.1.3(@grpc/grpc-js@1.14.4)(@nestjs/common@11.2.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.2.1)(amqp-connection-manager@5.0.0(amqplib@2.0.1))(amqplib@2.0.1)(ioredis@6.0.0)(reflect-metadata@0.2.2)':
     dependencies:
       '@nestjs/microservices': 11.2.1(@grpc/grpc-js@1.14.4)(@nestjs/common@11.2.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.2.1)(amqp-connection-manager@5.0.0(amqplib@2.0.1))(amqplib@2.0.1)(ioredis@6.0.0)(reflect-metadata@0.2.2)(rxjs@7.8.2)
       rxjs: 7.8.2

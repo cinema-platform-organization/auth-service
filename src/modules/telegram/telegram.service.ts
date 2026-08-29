@@ -14,6 +14,7 @@ import { RedisService } from "@/infrastructure/redis/redis.service";
 import { UserRepository } from "@/shared/repositories";
 
 import { TokenService } from "../token/token.service";
+import { UsersClientGrpc } from "../users/users.grpc";
 
 import { TelegramSession, TelegramTokens } from "./interfaces";
 import { TelegramRepository } from "./telegram.repository";
@@ -31,6 +32,7 @@ export class TelegramService {
 		private readonly telegramRepository: TelegramRepository,
 		private readonly userRepository: UserRepository,
 		private readonly tokenService: TokenService,
+		private readonly usersClient: UsersClientGrpc,
 	) {
 		this.BOT_ID = this.configService.get("telegram.botId", { infer: true });
 		this.BOT_TOKEN = this.configService.get("telegram.botToken", {
@@ -75,6 +77,7 @@ export class TelegramService {
 		if (exists && exists.phone) {
 			return this.tokenService.generate(exists.id);
 		}
+		this.usersClient.create({ id: exists.id }).subscribe();
 
 		const sessionId = randomBytes(16).toString("hex");
 

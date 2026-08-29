@@ -13,6 +13,7 @@ import { UserRepository } from "@/shared/repositories";
 
 import { OtpService } from "../otp/otp.service";
 import { TokenService } from "../token/token.service";
+import { UsersClientGrpc } from "../users/users.grpc";
 
 @Injectable()
 export class AuthService {
@@ -21,6 +22,7 @@ export class AuthService {
 		private readonly otpService: OtpService,
 		private readonly tokenService: TokenService,
 		private readonly messagingService: MessagingService,
+		private readonly usersClient: UsersClientGrpc,
 	) {}
 
 	public async sendOtp(data: SendOtpRequest) {
@@ -44,6 +46,8 @@ export class AuthService {
 			identifier,
 			type as "phone" | "email",
 		);
+
+		console.log("CODE: ", code);
 
 		await this.messagingService.otpRequested({
 			identifier,
@@ -87,6 +91,8 @@ export class AuthService {
 				isEmailVerified: true,
 			});
 		}
+
+		this.usersClient.create({ id: account.id }).subscribe();
 
 		return this.tokenService.generate(account.id);
 	}
