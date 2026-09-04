@@ -3,7 +3,7 @@ import {
 	TelegramCompleteRequest,
 	TelegramConsumeRequest,
 	TelegramVerifyRequest,
-} from "@cinema-platform/contracts/gen/auth";
+} from "@cinema-platform/contracts/gen/ts/auth";
 import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { RpcException } from "@nestjs/microservices";

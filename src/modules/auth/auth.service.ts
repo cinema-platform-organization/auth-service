@@ -3,7 +3,7 @@ import type {
 	RefreshRequest,
 	SendOtpRequest,
 	VerifyOtpRequest,
-} from "@cinema-platform/contracts/gen/auth";
+} from "@cinema-platform/contracts/gen/ts/auth";
 import type { Account } from "@generated/client";
 import { Injectable } from "@nestjs/common";
 import { RpcException } from "@nestjs/microservices";

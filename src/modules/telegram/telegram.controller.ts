@@ -6,7 +6,7 @@ import type {
 	TelegramInitResponse,
 	TelegramVerifyRequest,
 	TelegramVerifyResponse,
-} from "@cinema-platform/contracts/gen/auth";
+} from "@cinema-platform/contracts/gen/ts/auth";
 import { Controller } from "@nestjs/common";
 import { GrpcMethod } from "@nestjs/microservices";
 
