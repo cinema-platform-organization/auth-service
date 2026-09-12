@@ -18,7 +18,6 @@ import { OtpService } from "../otp/otp.service";
 
 import { AccountRepository } from "./account.repository";
 
-// CHANGE LATER
 enum Role {
 	USER = 0,
 	ADMIN = 1,

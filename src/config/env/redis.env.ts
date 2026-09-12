@@ -13,5 +13,6 @@ export const redisEnv = registerAs<RedisConfig>("redis", () => {
 		password: process.env.REDIS_PASSWORD,
 		host: process.env.REDIS_HOST,
 		port: parseInt(process.env.REDIS_PORT),
+		db: parseInt(process.env.REDIS_DB),
 	};
 });

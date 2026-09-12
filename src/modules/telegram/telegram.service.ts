@@ -8,6 +8,7 @@ import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { RpcException } from "@nestjs/microservices";
 import { createHash, createHmac, randomBytes } from "crypto";
+import { PinoLogger } from "nestjs-pino";
 
 import { AllConfigs } from "@/config";
 import { RedisService } from "@/infrastructure/redis/redis.service";
@@ -27,6 +28,7 @@ export class TelegramService {
 	private readonly REDIRECT_ORIGIN: string;
 
 	public constructor(
+		private readonly logger: PinoLogger,
 		private readonly redisService: RedisService,
 		private readonly configService: ConfigService<AllConfigs>,
 		private readonly telegramRepository: TelegramRepository,
@@ -34,6 +36,8 @@ export class TelegramService {
 		private readonly tokenService: TokenService,
 		private readonly usersClient: UsersClientGrpc,
 	) {
+		this.logger.setContext(TelegramService.name);
+
 		this.BOT_ID = this.configService.get("telegram.botId", { infer: true });
 		this.BOT_TOKEN = this.configService.get("telegram.botToken", {
 			infer: true,
@@ -77,7 +81,8 @@ export class TelegramService {
 		if (exists && exists.phone) {
 			return this.tokenService.generate(exists.id);
 		}
-		this.usersClient.create({ id: exists.id }).subscribe();
+
+		await this.usersClient.create({ id: exists.id });
 
 		const sessionId = randomBytes(16).toString("hex");
 

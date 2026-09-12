@@ -115,7 +115,19 @@ export class AuthService {
 		}
 
 		this.logger.info(`OTP verified successfully for ${identifier}`);
-		this.usersClient.create({ id: account.id }).subscribe();
+
+		try {
+			await this.usersClient.create({ id: account.id });
+		} catch (error) {
+			this.logger.error(
+				`Failed to create user profile for account ${account.id}:`,
+				error,
+			);
+			throw new RpcException({
+				code: RpcStatus.INTERNAL,
+				details: "Failed to create user profile",
+			});
+		}
 
 		return this.tokenService.generate(account.id);
 	}
