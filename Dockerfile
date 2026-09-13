@@ -1,5 +1,8 @@
 FROM node:22.19.0 AS builder
 
+ARG DATABASE_URI
+ENV DATABASE_URI=$DATABASE_URI
+
 RUN npm install -g pnpm@10.27.0
 
 WORKDIR /app

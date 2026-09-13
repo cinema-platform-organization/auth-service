@@ -26,3 +26,5 @@ jobs:
                   tags: |
                       ruslanparkhomchuk/cinema-platform:auth-latest
                       ruslanparkhomchuk/cinema-platform:auth-${{ github.sha }}
+                  build-args: |
+                      DATABASE_URI=${{ secrets.DATABASE_URI }}
