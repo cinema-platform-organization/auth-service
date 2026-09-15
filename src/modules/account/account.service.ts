@@ -1,5 +1,5 @@
 import { RpcStatus } from "@cinema-platform/common";
-import { convertEnum } from "@cinema-platform/common";
+//import { convertEnum } from "@cinema-platform/common";
 import type {
 	ConfirmEmailChangeRequest,
 	ConfirmPhoneChangeRequest,
@@ -7,6 +7,7 @@ import type {
 	InitEmailChangeRequest,
 	InitPhoneChangeRequest,
 	//Role,
+	Role as ProtoRole,
 } from "@cinema-platform/contracts/gen/ts/account";
 import { Injectable } from "@nestjs/common";
 import { RpcException } from "@nestjs/microservices";
@@ -18,10 +19,10 @@ import { OtpService } from "../otp/otp.service";
 
 import { AccountRepository } from "./account.repository";
 
-enum Role {
+/*enum Role {
 	USER = 0,
 	ADMIN = 1,
-}
+}*/
 
 @Injectable()
 export class AccountService {
@@ -49,7 +50,7 @@ export class AccountService {
 			email: account.email,
 			isPhoneVerified: account.isPhoneVerified,
 			isEmailVerified: account.isEmailVerified,
-			role: convertEnum(Role, account.role),
+			role: account.role as unknown as ProtoRole,
 		};
 	}
 

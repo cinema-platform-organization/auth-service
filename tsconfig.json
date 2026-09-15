@@ -27,5 +27,12 @@
 		"strictBindCallApply": false,
 		"noFallthroughCasesInSwitch": false,
 		"strictPropertyInitialization": false
-	}
+	},
+	"exclude": [
+		"node_modules",
+		"test",
+		"dist",
+		"**/*spec.ts",
+		"prisma.config.ts"
+	]
 }
