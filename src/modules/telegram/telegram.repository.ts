@@ -14,4 +14,12 @@ export class TelegramRepository {
 			},
 		});
 	}
+
+	public async create(telegramId: string): Promise<Account> {
+		return await this.prismaService.account.create({
+			data: {
+				telegramId,
+			},
+		});
+	}
 }

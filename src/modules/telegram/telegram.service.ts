@@ -82,7 +82,16 @@ export class TelegramService {
 			return this.tokenService.generate(exists.id);
 		}
 
-		await this.usersClient.create({ id: exists.id });
+		let accountId: string;
+
+		if (exists) {
+			accountId = exists.id;
+		} else {
+			const account = await this.telegramRepository.create(telegramId);
+			accountId = account.id;
+
+			await this.usersClient.create({ id: accountId });
+		}
 
 		const sessionId = randomBytes(16).toString("hex");
 
@@ -111,18 +120,23 @@ export class TelegramService {
 		}
 
 		const { telegramId } = JSON.parse(raw) as TelegramSession;
-		let user = await this.userRepository.findByPhone(phone);
 
-		if (!user) {
-			user = await this.userRepository.create({ phone });
+		const account =
+			await this.telegramRepository.findByTelegramId(telegramId);
+
+		if (!account) {
+			throw new RpcException({
+				code: RpcStatus.NOT_FOUND,
+				details: "Account not found",
+			});
 		}
 
-		await this.userRepository.update(user.id, {
-			telegramId,
+		await this.userRepository.update(account.id, {
+			phone,
 			isPhoneVerified: true,
 		});
 
-		const tokens = this.tokenService.generate(user.id);
+		const tokens = this.tokenService.generate(account.id);
 
 		await this.redisService.set(
 			`telegram_tokens:${sessionId}`,
