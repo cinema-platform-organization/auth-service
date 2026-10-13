@@ -15,13 +15,16 @@ export function createGrpcServer(
 
 	const url = `${host}:${port}`;
 
-	app.connectMicroservice<MicroserviceOptions>({
-		transport: Transport.GRPC,
-		options: {
-			package: grpcPackages,
-			protoPath: grpcProtoPaths,
-			url,
-			loader: grpcLoader,
+	app.connectMicroservice<MicroserviceOptions>(
+		{
+			transport: Transport.GRPC,
+			options: {
+				package: grpcPackages,
+				protoPath: grpcProtoPaths,
+				url,
+				loader: grpcLoader,
+			},
 		},
-	});
+		{ inheritAppConfig: true },
+	);
 }
