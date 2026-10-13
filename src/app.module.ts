@@ -1,6 +1,6 @@
+import { MetricsModule, ServiceLoggerModule } from "@cinema-platform/common";
 import { Module } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
-import { LoggerModule } from "nestjs-pino";
 
 import {
 	databaseEnv,
@@ -19,7 +19,6 @@ import { OtpModule } from "./modules/otp/otp.module";
 import { TelegramModule } from "./modules/telegram/telegram.module";
 import { TokenModule } from "./modules/token/token.module";
 import { UsersModule } from "./modules/users/users.module";
-import { ObservabilityModule } from "./observability/observability.module";
 
 @Module({
 	imports: [
@@ -39,26 +38,11 @@ import { ObservabilityModule } from "./observability/observability.module";
 				rmqEnv,
 			],
 		}),
-		LoggerModule.forRoot({
-			pinoHttp: {
-				level: process.env.LOG_LEVEL,
-				transport: {
-					target: "pino/file",
-					options: {
-						destination: "/var/log/services/auth/auth.log",
-						mkdir: true,
-					},
-				},
-				messageKey: "msg",
-				customProps: () => ({
-					service: "auth-service",
-				}),
-			},
-		}),
+		ServiceLoggerModule.forRoot("auth-service"),
+		MetricsModule.forRoot("auth-service"),
 		PrismaModule,
 		RedisModule,
 		MessagingModule,
-		ObservabilityModule,
 		AuthModule,
 		OtpModule,
 		AccountModule,

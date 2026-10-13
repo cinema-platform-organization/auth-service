@@ -4,26 +4,25 @@ import { resourceFromAttributes } from "@opentelemetry/resources";
 import { NodeSDK } from "@opentelemetry/sdk-node";
 import { ATTR_SERVICE_NAME } from "@opentelemetry/semantic-conventions";
 
-const traceExporter = new OTLPTraceExporter({
-	url: "http://jaeger:4317",
-});
-
 const otelSdk = new NodeSDK({
-	traceExporter,
+	traceExporter: new OTLPTraceExporter({
+		url: process.env.OTEL_EXPORTER_OTLP_ENDPOINT ?? "http://jaeger:4317",
+	}),
 	resource: resourceFromAttributes({
 		[ATTR_SERVICE_NAME]: "auth-service",
 	}),
 	instrumentations: [
 		getNodeAutoInstrumentations({
-			"@opentelemetry/instrumentation-grpc": { enabled: true },
-			"@opentelemetry/instrumentation-http": { enabled: true },
-			"@opentelemetry/instrumentation-nestjs-core": {
-				enabled: true,
+			"@opentelemetry/instrumentation-fs": { enabled: false },
+			"@opentelemetry/instrumentation-http": {
+				ignoreIncomingRequestHook: req => req.url === "/metrics",
 			},
-			"@opentelemetry/instrumentation-redis": { enabled: true },
-			"@opentelemetry/instrumentation-pg": { enabled: true },
 		}),
 	],
 });
 
 otelSdk.start();
+
+process.on("SIGTERM", () => {
+	void otelSdk.shutdown().finally(() => process.exit(0));
+});

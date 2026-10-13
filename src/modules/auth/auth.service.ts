@@ -5,9 +5,8 @@ import type {
 	VerifyOtpRequest,
 } from "@cinema-platform/contracts/gen/ts/auth";
 import type { Account } from "@generated/client";
-import { Injectable } from "@nestjs/common";
+import { Injectable, Logger } from "@nestjs/common";
 import { RpcException } from "@nestjs/microservices";
-import { PinoLogger } from "nestjs-pino";
 
 import { MessagingService } from "@/infrastructure/messaging/messaging.service";
 import { UserRepository } from "@/shared/repositories";
@@ -18,23 +17,20 @@ import { UsersClientGrpc } from "../users/users.grpc";
 
 @Injectable()
 export class AuthService {
+	private readonly logger = new Logger(AuthService.name);
+
 	public constructor(
-		private readonly logger: PinoLogger,
 		private readonly userRepository: UserRepository,
 		private readonly otpService: OtpService,
 		private readonly tokenService: TokenService,
 		private readonly messagingService: MessagingService,
 		private readonly usersClient: UsersClientGrpc,
-	) {
-		this.logger.setContext(AuthService.name);
-	}
+	) {}
 
 	public async sendOtp(data: SendOtpRequest) {
 		const { identifier, type } = data;
 
-		this.logger.info(
-			`OTP request received: identifier=${identifier}, type=${type}`,
-		);
+		this.logger.log({ identifier, type }, "OTP request received");
 
 		let account: Account | null;
 
@@ -44,8 +40,9 @@ export class AuthService {
 			account = await this.userRepository.findByEmail(identifier);
 		}
 		if (!account) {
-			this.logger.info(
-				`Account not found, creating new account for ${identifier}`,
+			this.logger.log(
+				{ identifier },
+				"Account not found, creating new account",
 			);
 
 			account = await this.userRepository.create({
@@ -67,7 +64,7 @@ export class AuthService {
 			code,
 		});
 
-		this.logger.info(`OTP sent successfully to ${identifier}`);
+		this.logger.log({ identifier }, "OTP sent");
 
 		return { ok: true };
 	}
@@ -75,9 +72,7 @@ export class AuthService {
 	public async verifyOtp(data: VerifyOtpRequest) {
 		const { identifier, code, type } = data;
 
-		this.logger.info(
-			`OTP verification attempt: ${identifier}, code=${code}`,
-		);
+		this.logger.log({ identifier, type }, "OTP verification attempt");
 
 		await this.otpService.verify(
 			identifier,
@@ -94,7 +89,8 @@ export class AuthService {
 		}
 		if (!account) {
 			this.logger.warn(
-				`OTP verified but account not found: ${identifier}`,
+				{ identifier },
+				"OTP verified but account not found",
 			);
 
 			throw new RpcException({
@@ -114,25 +110,14 @@ export class AuthService {
 			});
 		}
 
-		this.logger.info(`OTP verified successfully for ${identifier}`);
+		this.logger.log({ accountId: account.id }, "OTP verified");
 
-		try {
-			await this.usersClient.create({ id: account.id });
-		} catch (error) {
-			this.logger.error(
-				`Failed to create user profile for account ${account.id}:`,
-				error,
-			);
-			throw new RpcException({
-				code: RpcStatus.INTERNAL,
-				details: "Failed to create user profile",
-			});
-		}
+		await this.usersClient.create({ id: account.id });
 
 		return this.tokenService.generate(account.id);
 	}
 
-	public async refresh(data: RefreshRequest) {
+	public refresh(data: RefreshRequest) {
 		const { refreshToken } = data;
 
 		this.logger.debug("Refresh token requested");
@@ -146,9 +131,7 @@ export class AuthService {
 			});
 		}
 
-		this.logger.info(
-			`Refresh token verified successfully for user=${result.userId}`,
-		);
+		this.logger.log({ userId: result.userId }, "Refresh token verified");
 
 		return this.tokenService.generate(result.userId);
 	}

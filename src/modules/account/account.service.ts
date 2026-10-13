@@ -9,7 +9,8 @@ import type {
 	//Role,
 	Role as ProtoRole,
 } from "@cinema-platform/contracts/gen/ts/account";
-import { Injectable } from "@nestjs/common";
+import { Prisma } from "@generated/client";
+import { Injectable, Logger } from "@nestjs/common";
 import { RpcException } from "@nestjs/microservices";
 
 import { MessagingService } from "@/infrastructure/messaging/messaging.service";
@@ -26,6 +27,8 @@ import { AccountRepository } from "./account.repository";
 
 @Injectable()
 export class AccountService {
+	private readonly logger = new Logger(AccountService.name);
+
 	public constructor(
 		private readonly messagingService: MessagingService,
 		private readonly accountRepository: AccountRepository,
@@ -80,6 +83,8 @@ export class AccountService {
 			expiresAt: new Date(Date.now() + 5 * 60 * 1000),
 		});
 
+		this.logger.log({ accountId: userId }, "Email change requested");
+
 		return { ok: true };
 	}
 
@@ -105,18 +110,39 @@ export class AccountService {
 		}
 		if (pending.expiresAt < new Date()) {
 			throw new RpcException({
-				code: RpcStatus.NOT_FOUND,
+				code: RpcStatus.FAILED_PRECONDITION,
 				details: "Code expired",
 			});
 		}
 
 		await this.otpService.verify(pending.value, code, "email");
-		await this.userRepository.update(userId, {
-			email,
-			isEmailVerified: true,
-		});
+
+		try {
+			await this.userRepository.update(userId, {
+				email,
+				isEmailVerified: true,
+			});
+		} catch (error) {
+			if (
+				error instanceof Prisma.PrismaClientKnownRequestError &&
+				error.code === "P2002"
+			) {
+				throw new RpcException({
+					code: RpcStatus.ALREADY_EXISTS,
+					details: "Email already in use",
+				});
+			}
+
+			this.logger.error(
+				{ err: error as Error, accountId: userId },
+				"Failed to update email",
+			);
+			throw error;
+		}
 
 		await this.accountRepository.deletePendingChange(userId, "email");
+
+		this.logger.log({ accountId: userId }, "Email changed");
 
 		return { ok: true };
 	}
@@ -147,6 +173,8 @@ export class AccountService {
 			expiresAt: new Date(Date.now() + 5 * 60 * 1000),
 		});
 
+		this.logger.log({ accountId: userId }, "Phone change requested");
+
 		return { ok: true };
 	}
 
@@ -172,18 +200,39 @@ export class AccountService {
 		}
 		if (pending.expiresAt < new Date()) {
 			throw new RpcException({
-				code: RpcStatus.NOT_FOUND,
+				code: RpcStatus.FAILED_PRECONDITION,
 				details: "Code expired",
 			});
 		}
 
 		await this.otpService.verify(pending.value, code, "phone");
-		await this.userRepository.update(userId, {
-			phone,
-			isPhoneVerified: true,
-		});
+
+		try {
+			await this.userRepository.update(userId, {
+				phone,
+				isPhoneVerified: true,
+			});
+		} catch (error) {
+			if (
+				error instanceof Prisma.PrismaClientKnownRequestError &&
+				error.code === "P2002"
+			) {
+				throw new RpcException({
+					code: RpcStatus.ALREADY_EXISTS,
+					details: "Phone already in use",
+				});
+			}
+
+			this.logger.error(
+				{ err: error as Error, accountId: userId },
+				"Failed to update phone",
+			);
+			throw error;
+		}
 
 		await this.accountRepository.deletePendingChange(userId, "phone");
+
+		this.logger.log({ accountId: userId }, "Phone changed");
 
 		return { ok: true };
 	}

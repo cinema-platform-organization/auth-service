@@ -4,11 +4,11 @@ import {
 	TelegramConsumeRequest,
 	TelegramVerifyRequest,
 } from "@cinema-platform/contracts/gen/ts/auth";
-import { Injectable } from "@nestjs/common";
+import { Prisma } from "@generated/client";
+import { Injectable, Logger } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { RpcException } from "@nestjs/microservices";
 import { createHash, createHmac, randomBytes } from "crypto";
-import { PinoLogger } from "nestjs-pino";
 
 import { AllConfigs } from "@/config";
 import { RedisService } from "@/infrastructure/redis/redis.service";
@@ -22,13 +22,14 @@ import { TelegramRepository } from "./telegram.repository";
 
 @Injectable()
 export class TelegramService {
+	private readonly logger = new Logger(TelegramService.name);
+
 	private readonly BOT_ID: string;
 	private readonly BOT_TOKEN: string;
 	private readonly BOT_USERNAME: string;
 	private readonly REDIRECT_ORIGIN: string;
 
 	public constructor(
-		private readonly logger: PinoLogger,
 		private readonly redisService: RedisService,
 		private readonly configService: ConfigService<AllConfigs>,
 		private readonly telegramRepository: TelegramRepository,
@@ -36,8 +37,6 @@ export class TelegramService {
 		private readonly tokenService: TokenService,
 		private readonly usersClient: UsersClientGrpc,
 	) {
-		this.logger.setContext(TelegramService.name);
-
 		this.BOT_ID = this.configService.get("telegram.botId", { infer: true });
 		this.BOT_TOKEN = this.configService.get("telegram.botToken", {
 			infer: true,
@@ -67,11 +66,17 @@ export class TelegramService {
 	public async verify(data: TelegramVerifyRequest) {
 		const isValid = this.checkTelegramAuth(data.query);
 
-		if (!isValid)
+		if (!isValid) {
+			this.logger.warn(
+				{ telegramId: data.query.id },
+				"Invalid Telegram signature",
+			);
+
 			throw new RpcException({
 				code: RpcStatus.UNAUTHENTICATED,
 				details: "Invalid Telegram signature",
 			});
+		}
 
 		const telegramId = data.query.id;
 
@@ -131,10 +136,34 @@ export class TelegramService {
 			});
 		}
 
-		await this.userRepository.update(account.id, {
-			phone,
-			isPhoneVerified: true,
-		});
+		try {
+			await this.userRepository.update(account.id, {
+				phone,
+				isPhoneVerified: true,
+			});
+		} catch (error) {
+			if (
+				error instanceof Prisma.PrismaClientKnownRequestError &&
+				error.code === "P2002"
+			) {
+				this.logger.warn(
+					{ accountId: account.id },
+					"Phone number already linked to another account",
+				);
+
+				throw new RpcException({
+					code: RpcStatus.ALREADY_EXISTS,
+					details:
+						"This phone number is already linked to another account",
+				});
+			}
+
+			this.logger.error(
+				{ err: error as Error, accountId: account.id },
+				"Failed to link phone to Telegram account",
+			);
+			throw error;
+		}
 
 		const tokens = this.tokenService.generate(account.id);
 
