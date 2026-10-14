@@ -17,7 +17,7 @@ export class TelegramController {
 	public constructor(private readonly telegramService: TelegramService) {}
 
 	@GrpcMethod("AuthService", "TelegramInit")
-	public async getAuthUrl(): Promise<TelegramInitResponse> {
+	public getAuthUrl(): TelegramInitResponse {
 		return this.telegramService.getAuthUrl();
 	}
 

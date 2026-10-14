@@ -58,7 +58,7 @@ export class AuthService {
 
 		console.log("CODE: ", code);
 
-		await this.messagingService.otpRequested({
+		this.messagingService.otpRequested({
 			identifier,
 			type,
 			code,

@@ -16,7 +16,7 @@ export class MessagingService {
 		this.logger.setContext(MessagingService.name);
 	}
 
-	public async otpRequested(data: OtpRequestedEvent) {
+	public otpRequested(data: OtpRequestedEvent) {
 		this.client.emit("auth.otp.requested", data).subscribe({
 			error: error => {
 				this.logger.error(
@@ -27,7 +27,7 @@ export class MessagingService {
 		});
 	}
 
-	public async emailChanged(data: EmailChangedEvent) {
+	public emailChanged(data: EmailChangedEvent) {
 		this.client.emit("account.email.changed", data).subscribe({
 			error: error => {
 				this.logger.error(
@@ -38,7 +38,7 @@ export class MessagingService {
 		});
 	}
 
-	public async phoneChanged(data: PhoneChangedEvent) {
+	public phoneChanged(data: PhoneChangedEvent) {
 		this.client.emit("account.phone.changed", data).subscribe({
 			error: error => {
 				this.logger.error(

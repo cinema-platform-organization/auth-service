@@ -1,12 +1,10 @@
 import { RpcStatus } from "@cinema-platform/common";
-//import { convertEnum } from "@cinema-platform/common";
 import type {
 	ConfirmEmailChangeRequest,
 	ConfirmPhoneChangeRequest,
 	GetAccountRequest,
 	InitEmailChangeRequest,
 	InitPhoneChangeRequest,
-	//Role,
 	Role as ProtoRole,
 } from "@cinema-platform/contracts/gen/ts/account";
 import { Prisma } from "@generated/client";
@@ -19,11 +17,6 @@ import { UserRepository } from "@/shared/repositories";
 import { OtpService } from "../otp/otp.service";
 
 import { AccountRepository } from "./account.repository";
-
-/*enum Role {
-	USER = 0,
-	ADMIN = 1,
-}*/
 
 @Injectable()
 export class AccountService {
@@ -71,7 +64,7 @@ export class AccountService {
 
 		const { code, hash } = await this.otpService.send(email, "email");
 
-		await this.messagingService.emailChanged({
+		this.messagingService.emailChanged({
 			email,
 			code,
 		});
@@ -161,7 +154,7 @@ export class AccountService {
 
 		const { code, hash } = await this.otpService.send(phone, "phone");
 
-		await this.messagingService.phoneChanged({
+		this.messagingService.phoneChanged({
 			phone,
 			code,
 		});

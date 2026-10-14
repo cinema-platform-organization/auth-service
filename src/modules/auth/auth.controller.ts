@@ -26,7 +26,7 @@ export class AuthController {
 	}
 
 	@GrpcMethod("AuthService", "Refresh")
-	public async refresh(data: RefreshRequest): Promise<RefreshResponse> {
-		return await this.authService.refresh(data);
+	public refresh(data: RefreshRequest): RefreshResponse {
+		return this.authService.refresh(data);
 	}
 }

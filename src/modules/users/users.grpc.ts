@@ -30,6 +30,7 @@ export class UsersClientGrpc implements OnModuleInit {
 				{ err: error as Error, userId: request.id },
 				"Failed to create user profile",
 			);
+
 			throw toRpcException(error, "Failed to create user profile");
 		}
 	}
